@@ -6,12 +6,11 @@ const path = require("path");                                //inbuild module
 
 const port = process.env.PORT || 3000;
 
+app.use(express.static('public'));
+
 app.get('/', (req,res) =>{
     res.render("home");
 })
-
-
-
 
 //set template engine
 app.use(expressLayout);
@@ -20,6 +19,6 @@ app.set('view engine', 'ejs');
 
 
 
-app.listen(port, ()=>{
+app.listen(port, ()=>{ 
     console.log(`port ${port} running...`)
 });
