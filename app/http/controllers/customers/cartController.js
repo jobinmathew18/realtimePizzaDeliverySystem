@@ -6,7 +6,7 @@ function cartController(){
         },
 
         update(req,res){
-            // let cart = {                         //object template (just for understanding)
+            // let cart = {                         //cart object template demo (just for understanding)
             //     items: {
             //         pizzaId: {
             //             item: pizzaObj, 
@@ -19,7 +19,7 @@ function cartController(){
             // }
 
             
-            //for the first time creating cart and adding basic object structure
+            //for the first time creating cart inside session and creating basic object structure of cart.
             if(!req.session.cart){                 //if cart is not created then create one.
                 req.session.cart = {
                     items: {},
@@ -42,10 +42,9 @@ function cartController(){
             }
             //if item's _id is already present.
             else{                               
-                cart.items[req.body._id].qty = cart.items[req.body._id].qty + 1
+                cart.items[req.body._id].qty = cart.items[req.body._id].qty + 1              //update the existing value of the key
                 cart.totalQty = cart.totalQty + 1
                 cart.totalPrice = cart.totalPrice + req.body.price
-
             }
 
             return res.json({totalQty: req.session.cart.totalQty});

@@ -26,11 +26,13 @@ function updateCart(pizza){
         }).show();
     })
 }
-
+  
 addToCart.forEach((btn) =>{
-    btn.addEventListener('click', (event)=>{
+    btn.addEventListener('click', (event)=>{ 
         let pizza = JSON.parse(btn.dataset.pizzadata);
         // console.log(pizza);
         updateCart(pizza);
     })
 });
+
+
