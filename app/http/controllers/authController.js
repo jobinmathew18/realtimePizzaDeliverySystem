@@ -3,6 +3,12 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 
 function authController(){
+
+    //if the logged in user is admin then go to '/admin/orders' otherwise go to '/'.
+    const _getRedirectUrl = (req) =>{
+        return req.user.role === 'admin' ? '/admin/orders' : '/'
+    }
+
     return {
         login (req,res){
             res.render('auth/login');
@@ -26,7 +32,8 @@ function authController(){
                         return next(err);
                     }
 
-                    return res.redirect('/'); 
+                    return res.redirect(_getRedirectUrl(req));             //_getRedirectUrl(req) is a user defined function which is defined above.
+
                 })
             })(req, res, next)
         },

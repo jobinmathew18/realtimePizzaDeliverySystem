@@ -30,6 +30,7 @@ function cartController(){
 
             let cart = req.session.cart;
             // console.log(cart);
+            // console.log(req.body);           //req.body will contain the object value of parameter "pizza" which is in app.js
 
             //check if item doesnot exist in cart
             if(!cart.items[req.body._id]){

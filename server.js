@@ -40,7 +40,7 @@ app.use(flash());
 
 //passport config
 const passportInit = require('./app/config/passport');
-passportInit(passport);
+passportInit(passport); 
 app.use(passport.initialize());
 app.use(passport.session());
 
