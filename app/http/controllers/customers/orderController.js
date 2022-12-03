@@ -24,9 +24,18 @@ function orderController(){
             
             order.save().then(result =>{
                 // console.log(result);
-                req.flash('success', 'Order placed successfully');
-                delete req.session.cart                                 //delete keyword is form javascript. It deletes the whole cart after placing the order.
-                return res.redirect('/customer/orders');
+
+                Order.populate(result, {path: 'customerId'}, (err, placedOrder)=>{
+                    req.flash('success', 'Order placed successfully');
+                    delete req.session.cart                               //delete keyword is form javascript. It deletes the whole cart after placing the order.
+                    
+                    //emit
+                    const eventEmitter = req.app.get('eventEmitter')
+                    eventEmitter.emit('orderPlaced', placedOrder);
+    
+                    return res.redirect('/customer/orders');
+                })
+
             }).catch(err =>{
                 req.flash('error', 'Something went wrong')
                 return res.redirect('/cart')
@@ -34,11 +43,22 @@ function orderController(){
         },
 
         async index(req,res){          
-            const orders = await Order.find({customerId: req.user._id}, null, {sort: {'createdAt': -1}});               //only fetching data of the logged in user.
+            const orders = await Order.find({customerId: req.user._id}, null, {sort: {'createdAt': -1}});            //only fetching data of the logged in user.
             // console.log(orders);                 //will display array of objects
             res.render('customers/orders', {orders: orders, moment: moment});
+        },
+
+        async show(req, res){
+            const order = await Order.findById(req.params.id);
+            // console.log(order)
+
+            //Authorize user
+            if(req.user._id.toString() === order.customerId.toString()){
+                return res.render('customers/singleOrder', {order: order});
+            } 
+            return res.redirect('/');
         }
     }
 }
 
-module.exports = orderController          
+module.exports = orderController             

@@ -9,6 +9,7 @@ const session = require('express-session');
 const flash = require('express-flash');
 const MongoDbStore = require('connect-mongo');
 const passport = require('passport');
+const emitter = require('events');                          //inbuilt module
 const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
@@ -25,6 +26,10 @@ connection.once('open' ,()=>{
     console.log("MongoDB connection successful");
 });
  
+//event emitter
+const eventEmitter = new emitter();             
+app.set('eventEmitter', eventEmitter);               //now we can use this eventEmitter anywhere in our application   
+
 //session config
 app.use(session({
     secret: process.env.COOKIE_SECRET,
@@ -59,6 +64,27 @@ app.set('view engine', 'ejs');
 //set routes
 require('./routes/web')(app);
 
-app.listen(port, ()=>{ 
+const server = app.listen(port, ()=>{ 
     console.log(`port ${port} running...`)
 });
+
+
+//SOCKET SETUP
+const io = require('socket.io')(server);
+io.on('connection', (socket) =>{
+
+    //Join
+    // console.log(socket.id)
+    socket.on('join', (roomName)=>{               //socket.on will recieve the 'join' event from socket.emit('join', `order_${order._id}`) which is in app.js and `order_${order._id}` is passed into roomName.
+        // console.log(roomName)
+        socket.join(roomName)                    //socket.join(roomName) will create a room which has the name of "roomName" 
+    })
+})
+
+eventEmitter.on('orderUpdated', (data)=>{                           //here "data" is recieving values from "eventEmitter.emit('orderUpdated', {id: req.body.orderId, status: req.body.status})" which is in statusController.js
+     io.to(`order_${data.id}`).emit('orderUpdated', data)          //and then this "data" is sent to "socket.on('orderUpdated', (data) =>{"  which is in app.js    
+})
+
+eventEmitter.on('orderPlaced', (data)=>{                       //here "data" is receiving values from orderController.js
+    io.to('adminRoom').emit('orderPlaced', data)                //and then this "data" is sent to socket.on of file admin.js
+})
