@@ -39,7 +39,7 @@ function initAdmin(socket) {
   function renderItems(items) {
     var parsedItems = Object.values(items);
     return parsedItems.map(function (menuItem) {
-      return "\n                 <p>".concat(menuItem.item.name, " - ").concat(menuItem.qty, " pcs </p>\n            ");
+      return "\n                 <p>".concat(menuItem.item.name, " - ").concat(menuItem.qty, " pcs </p>        \n            ");
     }).join('');
   }
   function generateMarkup(orders) {
@@ -150,7 +150,7 @@ function updateStatus(order) {
 
     if (dataProp === order.status) {
       stepCompleted = false;
-      time.innerText = moment__WEBPACK_IMPORTED_MODULE_2___default()(order.updatedAt).format('hh:mm A - DD MM YYYY');
+      time.innerText = moment__WEBPACK_IMPORTED_MODULE_2___default()(order.updatedAt).format('hh:mm A - DD MM');
       status.appendChild(time);
       if (status.nextElementSibling) {
         //nextElementSibling means add styles to that element which is next to the current element
@@ -163,7 +163,6 @@ updateStatus(order);
 
 //SOCKET CLIENT SIDE
 var socket = io();
-(0,_admin__WEBPACK_IMPORTED_MODULE_1__.initAdmin)(socket); //including all the codes of admin.js file into app.js
 
 //join
 if (order) {
@@ -174,7 +173,8 @@ if (order) {
 var adminAreaPath = window.location.pathname; //will fetch the url
 // console.log(adminAreaPath); 
 if (adminAreaPath.includes('admin')) {
-  //if adminAreaPath have admin in it.
+  //if "adminAreaPath" have admin in it.
+  (0,_admin__WEBPACK_IMPORTED_MODULE_1__.initAdmin)(socket); //including all the codes of admin.js file into app.js
   socket.emit('join', 'adminRoom');
 }
 socket.on('orderUpdated', function (data) {

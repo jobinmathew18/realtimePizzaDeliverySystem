@@ -74,7 +74,7 @@ function updateStatus(order){
         }
         if(dataProp === order.status){
             stepCompleted = false; 
-            time.innerText = moment(order.updatedAt).format('hh:mm A - DD MM YYYY')
+            time.innerText = moment(order.updatedAt).format('hh:mm A - DD MM')
             status.appendChild(time)
             if(status.nextElementSibling){                                  //nextElementSibling means add styles to that element which is next to the current element
                 status.nextElementSibling.classList.add('current');
@@ -90,7 +90,6 @@ updateStatus(order);
 
 //SOCKET CLIENT SIDE
 let socket = io();
-initAdmin(socket);                //including all the codes of admin.js file into app.js
 
 //join
 if(order){
@@ -100,7 +99,8 @@ if(order){
 
 let adminAreaPath = window.location.pathname;        //will fetch the url
 // console.log(adminAreaPath); 
-if(adminAreaPath.includes('admin')){                 //if adminAreaPath have admin in it.
+if(adminAreaPath.includes('admin')){                 //if "adminAreaPath" have admin in it.
+    initAdmin(socket);                               //including all the codes of admin.js file into app.js
     socket.emit('join', 'adminRoom')
 }
 

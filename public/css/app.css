@@ -245,6 +245,10 @@ body {
   color: #232323;
 }
 
+nav {
+  background-color: white;
+}
+
 nav li:last-child a {
   background: #FE5F1E;
 }
@@ -259,8 +263,51 @@ nav li a:hover {
   color: #FE5F1E;
 }
 
-section.hero {
-  background: #F8F8F8;
+section .hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: url("/img/pizza.jpg") center no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.hero h1 {
+  color: white;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  text-align: center;
+}
+
+.upper-heading {
+  font-size: 2rem;
+  font-family: cursive;
+  font-weight: lighter;
+}
+
+.lower-heading {
+  font-size: 4rem;
+  font-weight: bolder;
+}
+
+.section-btn {
+  background: none;
+  color: white;
+  border: 1px solid white;
+  border-radius: 20px;
+  height: 50px;
+  width: 200px;
+  padding: 0.6rem;
+  margin: 3rem;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.section-btn:hover {
+  background-color: white;
+  color: black;
 }
 
 .size {
@@ -305,6 +352,14 @@ section.login a {
 }
 section.login a:hover {
   color: #b23301;
+}
+
+#test h1 {
+  color: black;
+  font-size: 3rem;
+  padding: 4rem 0 2rem;
+  font-family: "Times New Roman", Times, serif;
+  text-align: center;
 }
 
 .noty_theme__mint {
@@ -420,4 +475,20 @@ section.status {
 .status-box ul li small {
   float: right;
   font-size: 14px;
+}
+
+@media (max-width: 1060px) {
+  .container {
+    max-width: 90%;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 768px) {
+  .status-box ul li span::before {
+    font-size: 34px;
+  }
 }

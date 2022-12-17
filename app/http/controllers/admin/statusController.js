@@ -11,10 +11,11 @@ function statusController(){
                 if(err){
                     return res.redirect('/admin/orders');
                 }
+                
                 //Emit event
                 const eventEmitter = req.app.get('eventEmitter')            //req.app.get('eventEmitter'): getting eventEmitter from server.js
                 eventEmitter.emit('orderUpdated', {id: req.body.orderId, status: req.body.status})           //sending id and updated status to the server.js
-                
+
                 return res.redirect('/admin/orders'); 
             })            
         }
